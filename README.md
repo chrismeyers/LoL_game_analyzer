@@ -3,6 +3,8 @@ LoL_game_analyzer
 
 This project parses a specified statistic from a player's previous 10 games and plots the values.
 
+<img src="http://i.imgur.com/MEz3Sbh.png" alt="Current GUI" width="494px" height="446px">
+
 ##Dependencies:
 This application was built for Python **3** and requires it to run properly.  There are also a few third-party libraries that were used to provide graphing functionality:
 
