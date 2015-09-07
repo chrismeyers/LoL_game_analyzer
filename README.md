@@ -5,11 +5,11 @@ This project parses a specified statistic from a player's previous 10 games and 
 
 ##Usage:
 
-1. If needed, create a folder in the root directory named 'notes'.
-2. Create a .txt file inside the 'notes' directory named 'key.txt'.
-3. Enter your api key into the 'key.txt' file (key can be found at https://developer.riotgames.com/)
+1. If needed, create a folder in the root directory named `notes`.
+2. Create a .txt file inside the `notes` directory named `key.txt`.
+3. Enter your api key into the `key.txt` file (key can be found at https://developer.riotgames.com/)
    * Make sure there are no spaces before, after, or in the key string.
-5. Run 'python gui.py'
+5. Run `python gui.py`
 
 
 ##Legal
