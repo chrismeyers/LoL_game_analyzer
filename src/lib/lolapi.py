@@ -13,17 +13,18 @@ class LOLAPI:
 		return keyFile.readlines()
 
 	def buildMatchURL(self, summID, region):
-		return "https://" + region + ".api.pvp.net/api/lol/" + region +\
+		return "https://" + region.lower() + ".api.pvp.net/api/lol/" + region.lower() +\
 			"/v1.3/game/by-summoner/" + str(summID) + "/recent?api_key=" + str(self.getApiKey()[0])
 
 	def buildSummIdURL(self, name, region):
-		return "https://" + region + ".api.pvp.net/api/lol/" + region +\
+		return "https://" + region.lower() + ".api.pvp.net/api/lol/" + region.lower() +\
 			"/v1.4/summoner/by-name/" + name + "?api_key=" + self.getApiKey()[0]
 
 	def getIdFromName(self, name, region):
+		name = self.formatName(name)
 		url = self.buildSummIdURL(name, region)
 		data = self.getJSON(url)
-		return data[self.formatName(name)]['id']
+		return data[name]['id']
 
 	def getMatches(self, summID, region):
 		url = self.buildMatchURL(summID, region)
