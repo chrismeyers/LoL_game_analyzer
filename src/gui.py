@@ -1,5 +1,5 @@
-from Tkinter import *
-import tkMessageBox
+import tkinter as tk
+from tkinter import messagebox
 from lib import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
@@ -9,7 +9,7 @@ class Gui:
 	lastRegion = ""
 	lastSummoner = ""
 	stats = ""
-	mainGUI = Tk()
+	mainGUI = tk.Tk()
 	mainGUI.resizable(0,0) # Makes GUI unresizable
 
 	api = lolapi.LOLAPI()
@@ -28,51 +28,51 @@ class Gui:
 		
 	def setupGUI(self):
 		#==============FRAMES=============
-		app = Frame(self.mainGUI)
+		app = tk.Frame(self.mainGUI)
 		app.pack()
-		info = Frame(app)
-		info.pack(side=TOP)
-		graph = Frame(app)
-		graph.pack(side=BOTTOM)
+		info = tk.Frame(app)
+		info.pack(side=tk.TOP)
+		graph = tk.Frame(app)
+		graph.pack(side=tk.BOTTOM)
 
 		#===============MENU===============
-		menubar = Menu(self.mainGUI)
+		menubar = tk.Menu(self.mainGUI)
 		menubar.add_command(label="Quit", command=self.mainGUI.quit)
 		self.mainGUI.config(menu=menubar)
 
 		#===============NAME===============
-		Label(info, text="Summoner Name:").pack(padx=2, pady=10, side=LEFT)
-		name = Entry(info)
-		name.pack(padx=2, pady=10, side=LEFT)
+		tk.Label(info, text="Summoner Name:").pack(padx=2, pady=10, side=tk.LEFT)
+		name = tk.Entry(info)
+		name.pack(padx=2, pady=10, side=tk.LEFT)
 
 		#=========REGION SELECTION=========
-		Label(info, text="Region:").pack(padx=2, pady=10, side=LEFT)
-		regionChoice = StringVar(info)
+		tk.Label(info, text="Region:").pack(padx=2, pady=10, side=tk.LEFT)
+		regionChoice = tk.StringVar(info)
 		regionChoice.set(staticdata.regions[0])
-		regionBox = OptionMenu(info, regionChoice, *staticdata.regions)
-		regionBox.pack(padx=2, pady=10, side=LEFT)
+		regionBox = tk.OptionMenu(info, regionChoice, *staticdata.regions)
+		regionBox.pack(padx=2, pady=10, side=tk.LEFT)
 
 		#==========STAT SELECTION=========
-		Label(info, text="Stat to Analyze:").pack(padx=2, pady=10, side=LEFT)
-		statChoice = StringVar(info)
+		tk.Label(info, text="Stat to Analyze:").pack(padx=2, pady=10, side=tk.LEFT)
+		statChoice = tk.StringVar(info)
 		statChoice.set(staticdata.stats[0])
-		statBox = OptionMenu(info, statChoice, *staticdata.stats)
-		statBox.pack(padx=2, pady=10, side=LEFT)
+		statBox = tk.OptionMenu(info, statChoice, *staticdata.stats)
+		statBox.pack(padx=2, pady=10, side=tk.LEFT)
 
 		#=============BUTTON==============
-		button = Button(info, text='Analyze', pady=15, width=10, command=lambda: self.onClick( \
+		button = tk.Button(info, text='Analyze', pady=15, width=10, command=lambda: self.onClick( \
 			fig, canvas, name, regionChoice, statChoice))
-		button.pack(side=LEFT)
+		button.pack(side=tk.LEFT)
 
 		#==============PLOT===============
 		fig = Figure(dpi=100)
 		canvas = FigureCanvasTkAgg(fig, master=graph)
 		canvas.show()
-		canvas.get_tk_widget().pack(side=BOTTOM)
+		canvas.get_tk_widget().pack(side=tk.BOTTOM)
 
 		toolbar = NavigationToolbar2TkAgg(canvas, graph)
 		toolbar.update()
-		canvas.get_tk_widget().pack(side=TOP)
+		canvas.get_tk_widget().pack(side=tk.TOP)
 
 		self.mainGUI.mainloop()
 
@@ -101,9 +101,9 @@ class Gui:
 				# name given is invalid.  Prompt the user to try again and return.
 				try:
 					self.summ.currentID = self.api.getIdFromName(self.summ.currentName, self.summ.currentRegion)
-				except ValueError:
-					tkMessageBox.showerror("Error", "Summoner not found!  Please try again.")
-					print "Summoner not found! Please try again."
+				except ValueError as e:
+					messagebox.showerror("Error", e)
+					print(e)
 					return
 				self.summ.data = self.api.getMatches(self.summ.currentID, self.summ.currentRegion)
 				self.stats = self.parse.getListOfStats(self.summ.data, currentStatTrans)
@@ -113,7 +113,7 @@ class Gui:
 
 		self.lastSummoner = self.summ.currentName
 		self.lastRegion = self.summ.currentRegion
-		print self.summ.currentName + " " +  self.summ.currentRegion + " " + str(self.summ.currentID) + "\n"
+		print(self.summ.currentName + " " +  self.summ.currentRegion + " " + str(self.summ.currentID) + "\n")
 
 		graph = fig.add_subplot(111)
 		graph.clear()

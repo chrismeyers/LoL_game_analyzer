@@ -1,5 +1,8 @@
-import urllib, json
+from urllib.request import urlopen
+from urllib.error import HTTPError
+import json
 import inspect
+import codecs
 
 class LOLAPI:
 	def __init__(self):
@@ -28,10 +31,13 @@ class LOLAPI:
 		return data
 
 	def getJSON(self, url):
-		print "FRESH DATA, API CALL USED FROM " + str(inspect.stack()[1][0].f_locals["self"].__class__) + \
-			  "."  + str(inspect.stack()[1][0].f_code.co_name)
-		response = urllib.urlopen(url)
-		return json.loads(response.read())
+		print("FRESH DATA, API CALL USED FROM " + str(inspect.stack()[1][0].f_locals["self"].__class__) + \
+			  "."  + str(inspect.stack()[1][0].f_code.co_name))
+		try:
+			response = urlopen(url).read().decode('utf-8')
+		except(HTTPError):
+			raise ValueError("Summoner not found!  Please try again.")
+		return json.loads(response)
 
 	def getTestJSON(self):
 		jsonFile = open('../notes/test.json', 'r')
